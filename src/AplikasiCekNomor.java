@@ -1,19 +1,81 @@
+
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import javax.swing.JOptionPane;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-
 /**
  *
  * @author HADI PC
  */
 public class AplikasiCekNomor extends javax.swing.JFrame {
 
+    private void setupInputValidation() {
+        txtInput.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent evt) {
+                char c = evt.getKeyChar();
+                // Membatasi hanya input angka (0-9)
+                if (!Character.isDigit(c) && c != KeyEvent.VK_BACK_SPACE) {
+                    evt.consume(); // Mengabaikan karakter yang bukan angka atau backspace
+                    JOptionPane.showMessageDialog(null, "Input hanya boleh angka", "Peringatan", JOptionPane.WARNING_MESSAGE);
+                }
+            }
+        });
+    }
+
+    private void setupFocusListener() {
+        txtInput.addFocusListener(new java.awt.event.FocusAdapter() {
+            @Override
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                // Membersihkan teks di JTextField saat mendapatkan fokus
+
+                txtInput.setText("");
+
+            }
+
+        });
+    }
+
     /**
      * Creates new form AplikasiCekNomor
      */
     public AplikasiCekNomor() {
         initComponents();
+        setupInputValidation();
+        setupFocusListener();
+    }
+
+    private void cekGenapGanjil() {
+        try {
+            // Ambil input dari user
+            String input = txtInput.getText();
+
+            // Validasi: jika input kosong
+            if (input.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Masukkan angka terlebih dahulu!", "Peringatan", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            // Validasi: pastikan input adalah angka
+            int angka = Integer.parseInt(input);
+
+            // Cek apakah angka genap atau ganjil
+            String hasilGenapGanjil = (angka % 2 == 0) ? "Genap" : "Ganjil";
+
+            // Cek apakah angka adalah bilangan prima
+            String hasilPrima = isPrima(angka) ? "dan merupakan bilangan prima" : "dan bukan bilangan prima";
+
+            // Menampilkan hasil menggunakan JOptionPane
+            JOptionPane.showMessageDialog(this, "Angka " + angka + " adalah " + hasilGenapGanjil + " " + hasilPrima, "Hasil Cek", JOptionPane.INFORMATION_MESSAGE);
+
+        } catch (NumberFormatException ex) {
+            // Jika input bukan angka
+            JOptionPane.showMessageDialog(this, "Input tidak valid! Masukkan angka yang benar.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     /**
@@ -24,22 +86,79 @@ public class AplikasiCekNomor extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
+
+        jPanel1 = new javax.swing.JPanel();
+        btnCek = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        txtInput = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        txtHasil = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
-        );
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Apikasi Cek Nomor Genap/Ganjil", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 18))); // NOI18N
+        jPanel1.setLayout(new java.awt.GridBagLayout());
+
+        btnCek.setText("Cek");
+        btnCek.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCekActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(12, 12, 12, 12);
+        jPanel1.add(btnCek, gridBagConstraints);
+
+        jLabel1.setText("Input Angka");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(12, 12, 12, 12);
+        jPanel1.add(jLabel1, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(12, 12, 12, 12);
+        jPanel1.add(txtInput, gridBagConstraints);
+
+        jLabel2.setText("Hasil");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(12, 12, 12, 12);
+        jPanel1.add(jLabel2, gridBagConstraints);
+
+        txtHasil.setEditable(false);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(12, 12, 12, 12);
+        jPanel1.add(txtHasil, gridBagConstraints);
+
+        getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnCekActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCekActionPerformed
+        cekGenapGanjil();
+    }//GEN-LAST:event_btnCekActionPerformed
+
+    private boolean isPrima(int angka) {
+        if (angka <= 1) {
+            return false; // Angka <= 1 bukan bilangan prima
+        }
+        for (int i = 2; i <= Math.sqrt(angka); i++) {
+            if (angka % i == 0) {
+                return false; // Jika angka dapat dibagi dengan i, berarti bukan prima
+            }
+        }
+        return true; // Angka adalah bilangan prima
+    }
 
     /**
      * @param args the command line arguments
@@ -77,5 +196,11 @@ public class AplikasiCekNomor extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCek;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JTextField txtHasil;
+    private javax.swing.JTextField txtInput;
     // End of variables declaration//GEN-END:variables
 }
